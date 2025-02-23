@@ -1,0 +1,35 @@
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+*.env
+
+# Logs & Debug Files
+*.log
+debug/
+
+# Docker
+*.tar
+*.sock
+docker-compose.override.yml
+
+# Ignore compiled files
+*.o
+*.out
+*.class
+
+# Ignore node_modules (if frontend exists)
+node_modules/
+
+# Database files (for SQLite)
+*.sqlite3
+db.sqlite3
+
+# VS Code & IDE settings
+.vscode/
+.idea/
