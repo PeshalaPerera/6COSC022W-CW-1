@@ -5,6 +5,10 @@ from app.database.db import SessionLocal
 from app.database.models import User
 from passlib.hash import bcrypt
 import secrets
+from app.core.config import settings
+from jose import JWTError, jwt
+from datetime import datetime, timedelta
+from app.schemas.user import UserLogin, TokenResponse
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -37,3 +41,18 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+@router.post("/login", response_model=TokenResponse)
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.email == user.email).first()
+    if not db_user or not bcrypt.verify(user.password, db_user.hashed_password):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    to_encode = {
+        "sub": db_user.email,
+        "exp": datetime.utcnow() + timedelta(minutes=settings.access_token_expire_minutes),
+    }
+
+    access_token = jwt.encode(to_encode, settings.secret_key, algorithm="HS256")
+
+    return {"access_token": access_token, "token_type": "bearer"}
