@@ -9,6 +9,7 @@ from app.core.config import settings
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from app.schemas.user import UserLogin, TokenResponse
+from app.core.security import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -56,3 +57,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     access_token = jwt.encode(to_encode, settings.secret_key, algorithm="HS256")
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/me", response_model=UserResponse)
+def get_logged_in_user(current_user: User = Depends(get_current_user)):
+    return current_user
