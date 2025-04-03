@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, DateTime # type: ignore
+from sqlalchemy import Column, String, Integer, DateTime
 from datetime import datetime
 from app.database.base import Base
 
@@ -11,3 +11,6 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     api_key = Column(String, unique=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+    api_key_usage_count = Column(Integer, default=0)
+    api_key_last_used = Column(DateTime, nullable=True)
