@@ -61,3 +61,11 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserResponse)
 def get_logged_in_user(current_user: User = Depends(get_current_user)):
     return current_user
+
+@router.get("/usage")
+def get_api_key_usage(current_user: User = Depends(get_current_user)):
+    return {
+        "api_key": current_user.api_key,
+        "usage_count": current_user.api_key_usage_count,
+        "last_used": current_user.api_key_last_used
+    }
