@@ -127,6 +127,7 @@ const MainScreen = () => {
           overflowY: "auto",
           display: "flex",
           justifyContent: "center",
+          padding: "4rem",
           alignItems: "center",
         }}
       >
