@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RegisterForm from "../components/RegisterForm";
 import LoginForm from "../components/LoginForm";
 import DashboardPanel from "../components/DashboardPanel";
@@ -9,28 +9,23 @@ import worldMapRight from "../assets/world-map-two.png";
 import { useAuth } from "../context/AuthContext";
 
 const MainScreen = () => {
-  const [currentView, setCurrentView] = useState("register");
+  const [leftView, setLeftView] = useState("");
+  const [rightView, setRightView] = useState("register");
   const { token, logout } = useAuth();
 
   const renderView = () => {
-    switch (currentView) {
-      case "login":
-        return <LoginForm switchView={setCurrentView} />;
-      case "dashboard":
-        return <DashboardPanel />;
-      case "search":
-        return <SearchPanel />;
-      case "admin":
-        return <AdminPanel />;
-      default:
-        return <RegisterForm switchView={setCurrentView} />;
-    }
+    if (rightView === "login") return <LoginForm switchView={setRightView} />;
+    if (rightView === "register")
+      return <RegisterForm switchView={setRightView} />;
+    if (rightView === "search") return <SearchPanel />;
+    if (rightView === "admin") return <AdminPanel />;
+    return null;
   };
 
   const handleLogout = () => {
     console.log("🔒 Logging out...");
-    logout(); // from AuthContext
-    setCurrentView("login");
+    logout();
+    setRightView("register");
   };
 
   return (
@@ -83,9 +78,10 @@ const MainScreen = () => {
             }}
           >
             🌐 SecureAPI
+            {/* 🌍  */}
           </h1>
 
-          <h2
+          {(!token || leftView !== "dashboard") && (<><h2
             style={{
               fontSize: "2rem",
               fontWeight: "600",
@@ -94,9 +90,7 @@ const MainScreen = () => {
             }}
           >
             Explore the World Securely
-          </h2>
-
-          <p
+          </h2><p
             style={{
               fontSize: "1.3rem",
               lineHeight: "1.8",
@@ -106,10 +100,18 @@ const MainScreen = () => {
               fontWeight: 500,
             }}
           >
-            This platform acts as a secure bridge between users and the RestCountries API.
-            <br />
-            Authenticate, manage your API keys, track usage, and explore detailed country data — all in one place.
-          </p>
+              This platform acts as a secure bridge between users and the
+              RestCountries API.
+              <br />
+              Authenticate, manage your API keys, track usage, and explore
+              detailed country data — all in one place.
+            </p></>)}
+
+          {token && leftView === "dashboard" && (
+            <div>
+              <DashboardPanel />
+            </div>
+          )}
         </div>
       </div>
 
@@ -151,7 +153,10 @@ const MainScreen = () => {
             }}
           >
             <button
-              onClick={() => setCurrentView("dashboard")}
+              onClick={() => {
+                setLeftView("dashboard");
+                setRightView("search");
+              }}
               style={{
                 backgroundColor: "#178b93",
                 color: "#fff",

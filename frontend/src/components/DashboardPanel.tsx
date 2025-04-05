@@ -10,7 +10,7 @@ const DashboardPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (!token) return;
-  
+
       try {
         const [userRes, usageRes] = await Promise.all([
           axios.get("http://localhost:8000/auth/me", {
@@ -30,7 +30,7 @@ const DashboardPanel = () => {
         logout();
       }
     };
-  
+
     fetchData();
   }, [token]);
 
@@ -39,45 +39,63 @@ const DashboardPanel = () => {
   if (!user) return <div style={styles.loading}>Loading user info...</div>;
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>👋 Welcome, {user.username}!</h2>
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
-      <p>
-        <strong>API Key:</strong> {user.api_key}
-      </p>
-      <button onClick={logout} style={styles.logoutBtn}>
-        Logout
-      </button>
-
-      <h3 style={styles.usageTitle}>📈 Recent API Usage</h3>
-      <table style={styles.table}>
-        <thead>
-          <tr>
-            <th>Endpoint</th>
-            <th>Method</th>
-            <th>Timestamp</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(usage) && usage.length > 0 ? (
-            usage.map((entry, idx) => (
-              <tr key={idx}>
-                <td>{entry.endpoint}</td>
-                <td>{entry.method}</td>
-                <td>{new Date(entry.timestamp).toLocaleString()}</td>
-              </tr>
-            ))
-          ) : (
+    <div>
+      <h2
+        style={{
+          fontSize: "2rem",
+          fontWeight: "600",
+          color: "#f9f9f9",
+        }}
+      >
+        👋 Welcome, {user.username}!
+      </h2>
+        <p style={{
+              fontSize: "1.3rem",
+              lineHeight: "1.8",
+              maxWidth: "500px",
+              margin: "0 auto",
+              color: "#f0f0f0",
+              fontWeight: 500,
+            }}>
+          <strong>Email:</strong> {user.email}
+        </p>
+        <p style={{
+              fontSize: "1.3rem",
+              lineHeight: "1.8",
+              maxWidth: "500px",
+              margin: "0 auto",
+              color: "#f0f0f0",
+              fontWeight: 500,
+            }}>
+          <strong>API Key:</strong> {user.api_key}
+        </p>
+        <h3 style={styles.usageTitle}>📈 Recent API Usage</h3>
+        <table style={styles.table}>
+          <thead>
             <tr>
-              <td colSpan={3} style={{ textAlign: "center" }}>
-                No usage data available.
-              </td>
+              <th>Endpoint</th>
+              <th>Method</th>
+              <th>Timestamp</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {Array.isArray(usage) && usage.length > 0 ? (
+              usage.map((entry, idx) => (
+                <tr key={idx}>
+                  <td>{entry.endpoint}</td>
+                  <td>{entry.method}</td>
+                  <td>{new Date(entry.timestamp).toLocaleString()}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={3} style={{ textAlign: "center" }}>
+                  No usage data available.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
     </div>
   );
 };
@@ -92,22 +110,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   heading: {
     fontSize: "2rem",
     marginBottom: "1rem",
-    color: "#178b93",
-  },
-  logoutBtn: {
-    marginTop: "1rem",
-    padding: "0.75rem 1.5rem",
-    backgroundColor: "#e74c3c",
     color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontWeight: "bold",
   },
   usageTitle: {
     marginTop: "3rem",
     fontSize: "1.5rem",
-    color: "#178b93",
+    color: "#000",
   },
   table: {
     width: "100%",
