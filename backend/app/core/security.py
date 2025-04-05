@@ -1,7 +1,7 @@
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import JWTError, jwt
-from sqlalchemy.orm import Session
+from fastapi import Depends, HTTPException, status # type: ignore
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials # type: ignore
+from jose import JWTError, jwt # type: ignore
+from sqlalchemy.orm import Session # type: ignore
 from app.core.config import settings
 from app.database.models import User
 from app.database.db import SessionLocal

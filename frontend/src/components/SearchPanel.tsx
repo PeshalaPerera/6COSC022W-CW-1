@@ -92,13 +92,19 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: "#178b93",
   },
   input: {
+    flex: 1,
     padding: "0.75rem",
-    width: "80%",
-    marginRight: "1rem",
     borderRadius: "5px",
     border: "1px solid #ccc",
     fontSize: "1rem",
-  },
+  },  
+  inputGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    marginTop: "1rem",
+    marginBottom: "1rem",
+  },  
   button: {
     padding: "0.75rem 1.5rem",
     backgroundColor: "#178b93",
