@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 
@@ -15,13 +14,13 @@ const RegisterForm = ({ switchView }: { switchView: (view: string) => void }) =>
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:8000/auth/register', form);
-      toast.success(`✅ Registered!\n🔑 API Key: ${res.data.api_key}`, {
+      toast.success(`Registered!\n API Key: ${res.data.api_key}`, {
         duration: 4000,
         position: 'top-right',
       });
       setTimeout(() => switchView("login"), 4000);
     } catch (err: any) {
-      toast.error(err.response?.data?.detail || '❌ Registration failed');
+      toast.error(err.response?.data?.detail || 'Registration failed');
     }
   };  
 

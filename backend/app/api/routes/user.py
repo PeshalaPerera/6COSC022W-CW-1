@@ -1,12 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException # type: ignore
+from sqlalchemy.orm import Session # type: ignore
 from app.schemas.user import UserCreate, UserResponse
 from app.database.db import SessionLocal
 from app.database.models import User
-from passlib.hash import bcrypt
+from passlib.hash import bcrypt # type: ignore
 import secrets
 from app.core.config import settings
-from jose import JWTError, jwt
+from jose import jwt # type: ignore
 from datetime import datetime, timedelta
 from app.schemas.user import UserLogin, TokenResponse
 from app.core.security import get_current_user
@@ -22,14 +22,11 @@ def get_db():
 
 @router.post("/register", response_model=UserResponse)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    # Check if user/email exists
     if db.query(User).filter((User.username == user.username) | (User.email == user.email)).first():
         raise HTTPException(status_code=400, detail="Username or Email already exists")
 
-    # Hash password
     hashed_pw = bcrypt.hash(user.password)
 
-    # Generate API Key
     api_key = secrets.token_hex(16)
 
     new_user = User(

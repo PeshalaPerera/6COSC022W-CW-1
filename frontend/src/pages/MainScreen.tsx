@@ -30,7 +30,6 @@ const MainScreen = () => {
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      {/* Left Panel */}
       <div
         style={{
           flex: 1,
@@ -78,34 +77,38 @@ const MainScreen = () => {
             }}
           >
             🌐 SecureAPI
-            {/* 🌍  */}
           </h1>
 
-          {(!token || leftView !== "dashboard") && (<><h2
-            style={{
-              fontSize: "2rem",
-              fontWeight: "600",
-              marginBottom: "1rem",
-              color: "#f9f9f9",
-            }}
-          >
-            Explore the World Securely
-          </h2><p
-            style={{
-              fontSize: "1.3rem",
-              lineHeight: "1.8",
-              maxWidth: "500px",
-              margin: "0 auto",
-              color: "#f0f0f0",
-              fontWeight: 500,
-            }}
-          >
-              This platform acts as a secure bridge between users and the
-              RestCountries API.
-              <br />
-              Authenticate, manage your API keys, track usage, and explore
-              detailed country data — all in one place.
-            </p></>)}
+          {(!token || leftView !== "dashboard") && (
+            <>
+              <h2
+                style={{
+                  fontSize: "2rem",
+                  fontWeight: "600",
+                  marginBottom: "1rem",
+                  color: "#f9f9f9",
+                }}
+              >
+                Explore the World Securely
+              </h2>
+              <p
+                style={{
+                  fontSize: "1.3rem",
+                  lineHeight: "1.8",
+                  maxWidth: "500px",
+                  margin: "0 auto",
+                  color: "#f0f0f0",
+                  fontWeight: 500,
+                }}
+              >
+                This platform acts as a secure bridge between users and the
+                RestCountries API.
+                <br />
+                Authenticate, manage your API keys, track usage, and explore
+                detailed country data — all in one place.
+              </p>
+            </>
+          )}
 
           {token && leftView === "dashboard" && (
             <div>
@@ -115,7 +118,6 @@ const MainScreen = () => {
         </div>
       </div>
 
-      {/* Right Panel */}
       <div
         style={{
           flex: 1,
@@ -143,7 +145,6 @@ const MainScreen = () => {
           }}
         ></div>
 
-        {/* Logout Button */}
         {token && (
           <div
             style={{
@@ -153,41 +154,42 @@ const MainScreen = () => {
               zIndex: 2,
             }}
           >
-            <button
-              onClick={() => {
-                setLeftView("dashboard");
-                setRightView("search");
-              }}
-              style={{
-                backgroundColor: "#178b93",
-                color: "#fff",
-                border: "none",
-                padding: "0.5rem 1rem",
-                borderRadius: "6px",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              Dashboard
-            </button>
-            <button
-              onClick={handleLogout}
-              style={{
-                backgroundColor: "#e74c3c",
-                color: "#fff",
-                border: "none",
-                padding: "0.5rem 1rem",
-                borderRadius: "6px",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              Logout
-            </button>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <button
+                onClick={() => {
+                  setLeftView("dashboard");
+                  setRightView("search");
+                }}
+                style={{
+                  backgroundColor: "#178b93",
+                  color: "#fff",
+                  border: "none",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "6px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={handleLogout}
+                style={{
+                  backgroundColor: "#e74c3c",
+                  color: "#fff",
+                  border: "none",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "6px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                Logout
+              </button>
+            </div>
           </div>
         )}
 
-        {/* View */}
         <div style={{ position: "relative", zIndex: 1 }}>{renderView()}</div>
       </div>
     </div>
