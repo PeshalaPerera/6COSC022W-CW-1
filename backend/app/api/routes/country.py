@@ -15,16 +15,16 @@ def get_country(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)  # NEW
 ):
-    # ✅ Step 1: Validate API Key
+    #  Step 1: Validate API Key
     if x_api_key != current_user.api_key:
         raise HTTPException(status_code=403, detail="Invalid API Key")
 
-    # ✅ Step 2: Update usage tracking
+    #  Step 2: Update usage tracking
     current_user.api_key_usage_count += 1
     current_user.api_key_last_used = datetime.utcnow()
     db.commit()
 
-    # ✅ Step 3: Fetch from RestCountries API
+    #  Step 3: Fetch from RestCountries API
     response = requests.get(f"https://restcountries.com/v3.1/name/{name}")
 
     if response.status_code != 200:
