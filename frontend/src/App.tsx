@@ -3,6 +3,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import CountrySearch from './pages/CountrySearch'
+import Admin from './pages/Admin'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/search" element={<CountrySearch />} />
+      <Route path="/dashboard/admin" element={<Admin />} />
     </Routes>
   )
 }
