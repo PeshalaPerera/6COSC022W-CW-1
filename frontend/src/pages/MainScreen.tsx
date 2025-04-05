@@ -4,11 +4,13 @@ import LoginForm from "../components/LoginForm";
 import DashboardPanel from "../components/DashboardPanel";
 import SearchPanel from "../components/SearchPanel";
 import AdminPanel from "../components/AdminPanel";
-import worldMapLeft from "../assets/world-map-one.png"; // Left panel background
-import worldMapRight from "../assets/world-map-two.png"; // Right panel background
+import worldMapLeft from "../assets/world-map-one.png";
+import worldMapRight from "../assets/world-map-two.png";
+import { useAuth } from "../context/AuthContext";
 
 const MainScreen = () => {
-  const [currentView, setCurrentView] = useState("register"); // default view
+  const [currentView, setCurrentView] = useState("register");
+  const { token, logout } = useAuth();
 
   const renderView = () => {
     switch (currentView) {
@@ -21,13 +23,19 @@ const MainScreen = () => {
       case "admin":
         return <AdminPanel />;
       default:
-          return <RegisterForm switchView={setCurrentView} />;
+        return <RegisterForm switchView={setCurrentView} />;
     }
-  };  
+  };
+
+  const handleLogout = () => {
+    console.log("🔒 Logging out...");
+    logout(); // from AuthContext
+    setCurrentView("login");
+  };
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      {/* Left Panel with background image */}
+      {/* Left Panel */}
       <div
         style={{
           flex: 1,
@@ -43,7 +51,6 @@ const MainScreen = () => {
           overflow: "hidden",
         }}
       >
-        {/* Overlay to darken image */}
         <div
           style={{
             position: "absolute",
@@ -99,39 +106,14 @@ const MainScreen = () => {
               fontWeight: 500,
             }}
           >
-            This platform acts as a secure bridge between users and the
-            RestCountries API.
+            This platform acts as a secure bridge between users and the RestCountries API.
             <br />
-            Authenticate, manage your API keys, track usage, and explore
-            detailed country data — all in one place.
+            Authenticate, manage your API keys, track usage, and explore detailed country data — all in one place.
           </p>
         </div>
-
-        {/* Navigation */}
-        {/* <div style={{ marginTop: "2rem", position: "relative", zIndex: 1 }}>
-          {["login", "register", "dashboard", "search", "admin"].map((view) => (
-            <button
-              key={view}
-              onClick={() => setCurrentView(view)}
-              style={{
-                margin: "0.25rem 0",
-                padding: "0.5rem 1rem",
-                borderRadius: "6px",
-                border: "none",
-                backgroundColor: currentView === view ? "#fff" : "#14796b",
-                color: currentView === view ? "#14796b" : "#fff",
-                fontWeight: "bold",
-                cursor: "pointer",
-                width: "100%",
-              }}
-            >
-              {view.charAt(0).toUpperCase() + view.slice(1)}
-            </button>
-          ))}
-        </div> */}
       </div>
 
-      {/* Right Panel with background image */}
+      {/* Right Panel */}
       <div
         style={{
           flex: 1,
@@ -146,7 +128,6 @@ const MainScreen = () => {
           alignItems: "center",
         }}
       >
-        {/* Overlay to soften background */}
         <div
           style={{
             position: "absolute",
@@ -154,13 +135,53 @@ const MainScreen = () => {
             bottom: 0,
             left: 0,
             right: 0,
-            // backgroundColor: 'rgba(227, 242, 253, 0.85)', // light blue transparent
-            backgroundColor: "rgba(227, 242, 253, 0.4)", // change 0.85 to 0.5 or 0.4
+            backgroundColor: "rgba(227, 242, 253, 0.4)",
             zIndex: 0,
           }}
         ></div>
 
-        {/* Rendered view content */}
+        {/* Logout Button */}
+        {token && (
+          <div
+            style={{
+              position: "absolute",
+              top: "1rem",
+              right: "1.5rem",
+              zIndex: 2,
+            }}
+          >
+            <button
+              onClick={() => setCurrentView("dashboard")}
+              style={{
+                backgroundColor: "#178b93",
+                color: "#fff",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: "6px",
+                fontWeight: "bold",
+                cursor: "pointer",
+              }}
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={handleLogout}
+              style={{
+                backgroundColor: "#e74c3c",
+                color: "#fff",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: "6px",
+                fontWeight: "bold",
+                cursor: "pointer",
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+
+        {/* View */}
         <div style={{ position: "relative", zIndex: 1 }}>{renderView()}</div>
       </div>
     </div>
