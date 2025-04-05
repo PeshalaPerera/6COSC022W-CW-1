@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const navigate = useNavigate();
+  const { setToken } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,7 +17,7 @@ const Login = () => {
     try {
       const res = await axios.post('http://localhost:8000/auth/login', form);
       const token = res.data.access_token;
-      localStorage.setItem('token', token);
+      setToken(token);
       alert('Login successful!');
       navigate('/dashboard');
     } catch (err: any) {
