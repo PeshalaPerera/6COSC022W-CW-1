@@ -28,6 +28,7 @@ const Dashboard = () => {
         ]);
         console.log("📦 usage response:", usageRes.data); // <-- Add this
         setUser(userRes.data);
+        localStorage.setItem("api_key", userRes.data.api_key); // ✅ store key for search
         setUsage(Array.isArray(usageRes.data) ? usageRes.data : []); // safe default
       } catch (err) {
         console.error("🔥 Failed to fetch data", err);

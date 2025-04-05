@@ -25,7 +25,8 @@ def get_country(
     db.commit()
 
     #  Step 3: Fetch from RestCountries API
-    response = requests.get(f"https://restcountries.com/v3.1/name/{name}")
+    # response = requests.get(f"https://restcountries.com/v3.1/name/{name}")
+    response = requests.get(f"https://restcountries.com/v3.1/name/{name}", timeout=5)
 
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail="Country not found")
