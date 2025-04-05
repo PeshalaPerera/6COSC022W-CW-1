@@ -1,4 +1,5 @@
-from fastapi import FastAPI # type: ignore
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes.routes import router
 from app.core.config import settings
 from app.database.base import Base
@@ -9,6 +10,14 @@ app = FastAPI(
     title="Secure Country Middleware API",
     version="1.0",
     description="REST API Middleware for RestCountries.com",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # React dev server
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods: GET, POST, etc.
+    allow_headers=["*"],  # Allow all headers including Authorization
 )
 
 Base.metadata.create_all(bind=engine)
