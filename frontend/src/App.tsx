@@ -1,20 +1,16 @@
-import { Route, Routes } from 'react-router-dom'
-import Register from './pages/Register'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import CountrySearch from './pages/CountrySearch'
-import Admin from './pages/Admin'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import MainScreen from "./pages/MainScreen";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/search" element={<CountrySearch />} />
-      <Route path="/dashboard/admin" element={<Admin />} />
-    </Routes>
-  )
+    <BrowserRouter>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Routes>
+        <Route path="/" element={<MainScreen />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

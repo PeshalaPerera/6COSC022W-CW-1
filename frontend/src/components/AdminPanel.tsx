@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
-const AdminTools = () => {
+const AdminPanel = () => {
   const { token } = useContext(AuthContext);
   const [users, setUsers] = useState<any[]>([]);
   const [error, setError] = useState('');
@@ -90,4 +90,4 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 };
 
-export default AdminTools;
+export default AdminPanel;

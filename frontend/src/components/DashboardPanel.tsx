@@ -1,22 +1,16 @@
-// src/pages/Dashboard.tsx
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-const Dashboard = () => {
-  const navigate = useNavigate();
+const DashboardPanel = () => {
   const { token, logout } = useContext(AuthContext);
   const [user, setUser] = useState<any>(null);
   const [usage, setUsage] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
     const fetchData = async () => {
+      if (!token) return;
+  
       try {
         const [userRes, usageRes] = await Promise.all([
           axios.get("http://localhost:8000/auth/me", {
@@ -26,19 +20,21 @@ const Dashboard = () => {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
-        console.log("📦 usage response:", usageRes.data); // <-- Add this
+        console.log("📦 usage response:", usageRes.data);
         setUser(userRes.data);
-        localStorage.setItem("api_key", userRes.data.api_key); // ✅ store key for search
-        setUsage(Array.isArray(usageRes.data) ? usageRes.data : []); // safe default
+        localStorage.setItem("api_key", userRes.data.api_key);
+        setUsage(Array.isArray(usageRes.data) ? usageRes.data : []);
       } catch (err) {
         console.error("🔥 Failed to fetch data", err);
         alert("Failed to fetch data. Logging out.");
         logout();
       }
     };
-
+  
     fetchData();
-  }, [token, logout, navigate]);
+  }, [token]);
+
+  if (!token) return null;
 
   if (!user) return <div style={styles.loading}>Loading user info...</div>;
 
@@ -125,4 +121,4 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 };
 
-export default Dashboard;
+export default DashboardPanel;
