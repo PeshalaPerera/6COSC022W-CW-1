@@ -79,7 +79,8 @@ const MainScreen = () => {
             🌐 SecureAPI
           </h1>
 
-          {(!token || (leftView !== "dashboard" && leftView !== "adminDashboard")) && (
+          {(!token ||
+            (leftView !== "dashboard" && leftView !== "adminDashboard")) && (
             <>
               <h2
                 style={{
@@ -110,16 +111,20 @@ const MainScreen = () => {
             </>
           )}
 
-          {token && leftView === "dashboard" && user?.email !== "admin@gmail.com" && (
-            <div>
-              <DashboardPanel />
-            </div>
-          )}
-          {token && leftView === "adminDashboard" && user?.email === "admin@gmail.com" && (
-            <div>
-              <AdminPanel />
-            </div>
-          )}
+          {token &&
+            leftView === "dashboard" &&
+            user?.email !== "admin@gmail.com" && (
+              <div>
+                <DashboardPanel />
+              </div>
+            )}
+          {token &&
+            leftView === "adminDashboard" &&
+            user?.email === "admin@gmail.com" && (
+              <div>
+                <AdminPanel />
+              </div>
+            )}
         </div>
       </div>
 
