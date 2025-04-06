@@ -8,7 +8,7 @@ router = APIRouter(prefix="/admin", tags=["Admin"])
 
 @router.get("/users")
 def get_all_users(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if current_user.email != "admin@example.com":
+    if current_user.email != "admin@gmail.com":
         raise HTTPException(status_code=403, detail="Admins only.")
 
     users = db.query(User).all()

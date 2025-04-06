@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 const MainScreen = () => {
   const [leftView, setLeftView] = useState("");
   const [rightView, setRightView] = useState("register");
-  const { token, logout } = useAuth();
+  const { token, logout, user } = useAuth();
 
   const renderView = () => {
     if (rightView === "login") return <LoginForm switchView={setRightView} />;
@@ -79,7 +79,7 @@ const MainScreen = () => {
             🌐 SecureAPI
           </h1>
 
-          {(!token || leftView !== "dashboard") && (
+          {(!token || (leftView !== "dashboard" && leftView !== "adminDashboard")) && (
             <>
               <h2
                 style={{
@@ -110,9 +110,14 @@ const MainScreen = () => {
             </>
           )}
 
-          {token && leftView === "dashboard" && (
+          {token && leftView === "dashboard" && user?.email !== "admin@gmail.com" && (
             <div>
               <DashboardPanel />
+            </div>
+          )}
+          {token && leftView === "adminDashboard" && user?.email === "admin@gmail.com" && (
+            <div>
+              <AdminPanel />
             </div>
           )}
         </div>
@@ -157,7 +162,11 @@ const MainScreen = () => {
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <button
                 onClick={() => {
-                  setLeftView("dashboard");
+                  if (user?.email === "admin@gmail.com") {
+                    setLeftView("adminDashboard");
+                  } else {
+                    setLeftView("dashboard");
+                  }
                   setRightView("search");
                 }}
                 style={{

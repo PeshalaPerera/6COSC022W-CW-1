@@ -23,8 +23,12 @@ const AdminPanel = () => {
   }, [token]);
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>👑 Admin Dashboard</h2>
+    <>
+      <h2 style={{
+          fontSize: "2rem",
+          fontWeight: "600",
+          color: "#f9f9f9",
+        }}>Admin Dashboard</h2>
       {error && <p style={styles.error}>{error}</p>}
 
       {users.length > 0 ? (
@@ -53,7 +57,7 @@ const AdminPanel = () => {
       ) : (
         <p>No user data found.</p>
       )}
-    </div>
+    </>
   );
 };
 
