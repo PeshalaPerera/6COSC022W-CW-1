@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, Integer, DateTime # type: ignore
 from datetime import datetime
 from app.database.base import Base
 

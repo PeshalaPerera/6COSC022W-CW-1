@@ -1,9 +1,9 @@
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, Header
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException, Header # type: ignore
+from sqlalchemy.orm import Session # type: ignore
 from app.core.security import get_current_user
 from app.database.models import User
-from app.database.db import get_db  # You might need to import this
+from app.database.db import get_db
 import requests
 
 router = APIRouter(prefix="/countries", tags=["Countries"])
@@ -13,19 +13,20 @@ def get_country(
     name: str,
     x_api_key: str = Header(...),
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)  # NEW
+    db: Session = Depends(get_db)
 ):
-    # ✅ Step 1: Validate API Key
     if x_api_key != current_user.api_key:
         raise HTTPException(status_code=403, detail="Invalid API Key")
 
-    # ✅ Step 2: Update usage tracking
-    current_user.api_key_usage_count += 1
-    current_user.api_key_last_used = datetime.utcnow()
+    db_user = db.query(User).filter(User.id == current_user.id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    db_user.api_key_usage_count += 1
+    db_user.api_key_last_used = datetime.utcnow()
     db.commit()
 
-    # ✅ Step 3: Fetch from RestCountries API
-    response = requests.get(f"https://restcountries.com/v3.1/name/{name}")
+    response = requests.get(f"https://restcountries.com/v3.1/name/{name}", timeout=5)
 
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail="Country not found")
