@@ -11,7 +11,7 @@ Follow these steps to get the project running locally:
 ### 🔁 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/secureapi.git
+git clone https://github.com/PeshalaPerera/6COSC022W-CW-1.git
 cd secureapi
 ```
 
