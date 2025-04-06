@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const SearchPanel = () => {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState("");
   const [apiKey, setApiKey] = useState<string | null>(null);
 
   useEffect(() => {
@@ -13,25 +13,32 @@ const SearchPanel = () => {
   }, []);
 
   const handleSearch = async () => {
-    if (!query.trim()) return;
-
-    try {
-      const encodedName = encodeURIComponent(query.trim());
-      const res = await axios.get(
-        `http://localhost:8000/countries/${encodedName}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "x-api-key": apiKey || "",
-          },
-        }
-      );
-      setResult(res.data);
-      setError("");
-    } catch (err: any) {
-      setError(err.response?.data?.detail || "Search failed.");
-      setResult(null);
+    if (!query.trim()) {
+      toast.error("Please enter a country name.");
+      return;
     }
+
+    const encodedName = encodeURIComponent(query.trim());
+
+    await toast.promise(
+      axios.get(`http://localhost:8000/countries/${encodedName}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "x-api-key": apiKey || "",
+        },
+      }),
+      {
+        loading: "Searching country...",
+        success: (res) => {
+          setResult(res.data);
+          return `Found ${res.data.country_name}`;
+        },
+        error: (err) => {
+          setResult(null);
+          return err?.response?.data?.detail || "Search failed.";
+        },
+      }
+    );
   };
 
   return (
@@ -50,8 +57,6 @@ const SearchPanel = () => {
             Search
           </button>
         </div>
-
-        {error && <p style={styles.error}>{error}</p>}
 
         {result && (
           <div style={styles.result}>
@@ -97,14 +102,14 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: "5px",
     border: "1px solid #ccc",
     fontSize: "1rem",
-  },  
+  },
   inputGroup: {
     display: "flex",
     alignItems: "center",
     gap: "0.5rem",
     marginTop: "1rem",
     marginBottom: "1rem",
-  },  
+  },
   button: {
     padding: "0.75rem 1.5rem",
     backgroundColor: "#178b93",

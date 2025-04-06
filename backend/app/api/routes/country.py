@@ -18,8 +18,12 @@ def get_country(
     if x_api_key != current_user.api_key:
         raise HTTPException(status_code=403, detail="Invalid API Key")
 
-    current_user.api_key_usage_count += 1
-    current_user.api_key_last_used = datetime.utcnow()
+    db_user = db.query(User).filter(User.id == current_user.id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    db_user.api_key_usage_count += 1
+    db_user.api_key_last_used = datetime.utcnow()
     db.commit()
 
     response = requests.get(f"https://restcountries.com/v3.1/name/{name}", timeout=5)
