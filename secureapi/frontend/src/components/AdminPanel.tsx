@@ -1,21 +1,21 @@
-import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
-import { AuthContext } from '../context/AuthContext';
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 const AdminPanel = () => {
   const { token } = useContext(AuthContext);
   const [users, setUsers] = useState<any[]>([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/admin/users', {
+        const res = await axios.get("http://localhost:8000/admin/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(res.data);
       } catch (err: any) {
-        setError(err.response?.data?.detail || 'Failed to fetch admin data');
+        setError(err.response?.data?.detail || "Failed to fetch admin data");
       }
     };
 
@@ -24,11 +24,15 @@ const AdminPanel = () => {
 
   return (
     <>
-      <h2 style={{
+      <h2
+        style={{
           fontSize: "2rem",
           fontWeight: "600",
           color: "#f9f9f9",
-        }}>Admin Dashboard</h2>
+        }}
+      >
+        Admin Dashboard
+      </h2>
       {error && <p style={styles.error}>{error}</p>}
 
       {users.length > 0 ? (
@@ -49,7 +53,11 @@ const AdminPanel = () => {
                 <td>{user.username}</td>
                 <td>{user.api_key}</td>
                 <td>{user.api_key_usage_count}</td>
-                <td>{user.api_key_last_used ? new Date(user.api_key_last_used).toLocaleString() : 'Never'}</td>
+                <td>
+                  {user.api_key_last_used
+                    ? new Date(user.api_key_last_used).toLocaleString()
+                    : "Never"}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -63,34 +71,34 @@ const AdminPanel = () => {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    padding: '2rem',
-    maxWidth: '1000px',
-    margin: 'auto',
-    fontFamily: 'Arial, sans-serif',
+    padding: "2rem",
+    maxWidth: "1000px",
+    margin: "auto",
+    fontFamily: "Arial, sans-serif",
   },
   heading: {
-    fontSize: '2rem',
-    marginBottom: '1rem',
-    color: '#178b93',
+    fontSize: "2rem",
+    marginBottom: "1rem",
+    color: "#178b93",
   },
   error: {
-    color: 'red',
-    marginTop: '1rem',
+    color: "red",
+    marginTop: "1rem",
   },
   table: {
-    width: '100%',
-    borderCollapse: 'collapse',
-    marginTop: '1rem',
+    width: "100%",
+    borderCollapse: "collapse",
+    marginTop: "1rem",
   },
   th: {
-    backgroundColor: '#f4f4f4',
-    textAlign: 'left',
-    padding: '0.75rem',
-    borderBottom: '1px solid #ddd',
+    backgroundColor: "#f4f4f4",
+    textAlign: "left",
+    padding: "0.75rem",
+    borderBottom: "1px solid #ddd",
   },
   td: {
-    padding: '0.75rem',
-    borderBottom: '1px solid #ddd',
+    padding: "0.75rem",
+    borderBottom: "1px solid #ddd",
   },
 };
 
