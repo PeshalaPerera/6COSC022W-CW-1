@@ -12,11 +12,12 @@ const DashboardPanel = () => {
       if (!token) return;
 
       try {
+        const baseURL = process.env.REACT_APP_API_BASE_URL;
         const [userRes, usageRes] = await Promise.all([
-          axios.get("http://localhost:8000/auth/me", {
+          axios.get(`${baseURL}/auth/me`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:8000/auth/usage", {
+          axios.get(`${baseURL}/auth/usage`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

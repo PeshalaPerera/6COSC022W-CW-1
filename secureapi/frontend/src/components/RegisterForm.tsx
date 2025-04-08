@@ -17,7 +17,8 @@ const RegisterForm = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8000/auth/register", form);
+      const baseURL = process.env.REACT_APP_API_BASE_URL;
+      const res = await axios.post(`${baseURL}/auth/register`, form);
       toast.success(`Registered!\n API Key: ${res.data.api_key}`, {
         duration: 4000,
         position: "top-right",

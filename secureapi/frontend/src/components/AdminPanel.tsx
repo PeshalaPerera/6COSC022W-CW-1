@@ -8,9 +8,10 @@ const AdminPanel = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/admin/users", {
+        const res = await axios.get(`${baseURL}/admin/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(res.data);

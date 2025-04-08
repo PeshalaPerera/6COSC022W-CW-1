@@ -15,12 +15,13 @@ const LoginForm = ({ switchView }: { switchView: (view: string) => void }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8000/auth/login", form);
+      const baseURL = process.env.REACT_APP_API_BASE_URL;
+      const res = await axios.post(`${baseURL}/auth/login`, form);
       const token = res.data.access_token;
       setToken(token);
       localStorage.setItem("token", token);
 
-      const meRes = await axios.get("http://localhost:8000/auth/me", {
+      const meRes = await axios.get(`${baseURL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

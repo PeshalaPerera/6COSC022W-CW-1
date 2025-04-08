@@ -39,7 +39,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchUser = async (jwtToken: string) => {
     try {
-      const res = await fetch("http://localhost:8000/auth/me", {
+      const baseURL = process.env.REACT_APP_API_BASE_URL;
+      const res = await fetch(`${baseURL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
