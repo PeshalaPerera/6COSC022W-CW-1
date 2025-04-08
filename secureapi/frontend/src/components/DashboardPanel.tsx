@@ -1,42 +1,45 @@
-import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const DashboardPanel = () => {
-  const { token, logout } = useContext(AuthContext);
-  const [user, setUser] = useState<any>(null);
-  const [usage, setUsage] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!token) return;
-
-      try {
-        const [userRes, usageRes] = await Promise.all([
-          axios.get("http://localhost:8000/auth/me", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get("http://localhost:8000/auth/usage", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
-        console.log("📦 usage response:", usageRes.data);
-        setUser(userRes.data);
-        localStorage.setItem("api_key", userRes.data.api_key);
-        setUsage(Array.isArray(usageRes.data) ? usageRes.data : []);
-      } catch (err) {
-        console.error("🔥 Failed to fetch data", err);
-        alert("Failed to fetch data. Logging out.");
-        logout();
-      }
-    };
-
-    fetchData();
-  }, [token]);
+  const { token, user, usage } = useContext(AuthContext);
 
   if (!token) return null;
-
   if (!user) return <div style={styles.loading}>Loading user info...</div>;
+  // const { token, logout } = useContext(AuthContext);
+  // const [user, setUser] = useState<any>(null);
+  // const { usage } = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (!token) return;
+
+  //     try {
+  //       const [userRes, usageRes] = await Promise.all([
+  //         axios.get("http://localhost:8000/auth/me", {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         }),
+  //         axios.get("http://localhost:8000/auth/usage", {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         }),
+  //       ]);
+  //       console.log("📦 usage response:", usageRes.data);
+  //       setUser(userRes.data);
+  //       localStorage.setItem("api_key", userRes.data.api_key);
+  //       setUsage(Array.isArray(usageRes.data) ? usageRes.data : []);
+  //     } catch (err) {
+  //       console.error("🔥 Failed to fetch data", err);
+  //       alert("Failed to fetch data. Logging out.");
+  //       logout();
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [token]);
+
+  // if (!token) return null;
+
+  // if (!user) return <div style={styles.loading}>Loading user info...</div>;
 
   return (
     <div>
