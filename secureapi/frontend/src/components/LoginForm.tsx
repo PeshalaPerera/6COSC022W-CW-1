@@ -12,15 +12,17 @@ const LoginForm = ({ switchView }: { switchView: (view: string) => void }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const baseUrl = import.meta.env.VITE_BASE_URL
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8000/auth/login", form);
+      const res = await axios.post(`${baseUrl}/auth/login`, form);
       const token = res.data.access_token;
       setToken(token);
       localStorage.setItem("token", token);
 
-      const meRes = await axios.get("http://localhost:8000/auth/me", {
+      const meRes = await axios.get(`${baseUrl}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

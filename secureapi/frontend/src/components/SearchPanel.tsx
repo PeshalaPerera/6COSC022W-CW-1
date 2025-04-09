@@ -22,8 +22,10 @@ const SearchPanel = () => {
 
     const encodedName = encodeURIComponent(query.trim());
 
+    const baseUrl = import.meta.env.VITE_BASE_URL
+
     await toast.promise(
-      axios.get(`http://localhost:8000/countries/${encodedName}`, {
+      axios.get(`${baseUrl}/countries/${encodedName}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "x-api-key": apiKey || "",

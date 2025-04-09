@@ -43,9 +43,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
+  const baseUrl = import.meta.env.VITE_BASE_URL
+
   const fetchUser = async (jwtToken: string) => {
     try {
-      const res = await fetch("http://localhost:8000/auth/me", {
+      const res = await fetch(`${baseUrl}/auth/me`, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },
@@ -63,8 +65,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const jwtToken = tokenParam || token;
     if (!jwtToken) return;
 
+    const baseUrl = import.meta.env.VITE_BASE_URL
+
     try {
-      const res = await fetch("http://localhost:8000/auth/usage", {
+      const res = await fetch(`${baseUrl}/auth/usage`, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },

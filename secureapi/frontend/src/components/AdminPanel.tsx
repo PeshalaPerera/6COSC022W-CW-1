@@ -7,10 +7,12 @@ const AdminPanel = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [error, setError] = useState("");
 
+  const baseUrl = import.meta.env.VITE_BASE_URL
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/admin/users", {
+        const res = await axios.get(`${baseUrl}/admin/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(res.data);
