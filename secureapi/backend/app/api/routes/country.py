@@ -1,4 +1,6 @@
 from datetime import datetime
+from multiprocessing import process
+import os
 from fastapi import APIRouter, Depends, HTTPException, Header # type: ignore
 from sqlalchemy.orm import Session # type: ignore
 from app.core.security import get_current_user
@@ -26,7 +28,12 @@ def get_country(
     db_user.api_key_last_used = datetime.utcnow()
     db.commit()
 
-    response = requests.get(f"https://restcountries.com/v3.1/name/{name}", timeout=5)
+    rest_countries_api = process.env.REST_COUNTRIES_API
+    
+    if not rest_countries_api:
+        raise HTTPException(status_code=500, detail="REST_COUNTRIES_API environment variable not set")
+
+    response = requests.get(f"{restCountriesApi}/name/{name}", timeout=5) # type: ignore
 
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail="Country not found")

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const SearchPanel = () => {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<any>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
-
+  const { refreshUsage } = useAuth();
+  
   useEffect(() => {
     const key = localStorage.getItem("api_key");
     setApiKey(key);
@@ -20,8 +22,10 @@ const SearchPanel = () => {
 
     const encodedName = encodeURIComponent(query.trim());
 
+    const baseUrl = import.meta.env.VITE_BASE_URL
+
     await toast.promise(
-      axios.get(`http://localhost:8000/countries/${encodedName}`, {
+      axios.get(`${baseUrl}/countries/${encodedName}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "x-api-key": apiKey || "",
@@ -31,6 +35,7 @@ const SearchPanel = () => {
         loading: "Searching country...",
         success: (res) => {
           setResult(res.data);
+          refreshUsage();
           return `Found ${res.data.country_name}`;
         },
         error: (err) => {
