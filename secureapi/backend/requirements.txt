@@ -23,3 +23,4 @@ python-jose
 passlib[bcrypt]
 sqlalchemy
 pydantic-settings
+python-multipart
