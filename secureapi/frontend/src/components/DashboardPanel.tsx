@@ -48,7 +48,8 @@ const DashboardPanel = () => {
           <tr>
             <th>Endpoint</th>
             <th>Method</th>
-            <th>Timestamp</th>
+            <th>Usage Count</th>
+            <th>Last Used Time</th>
           </tr>
         </thead>
         <tbody>
@@ -57,7 +58,8 @@ const DashboardPanel = () => {
               <tr key={idx}>
                 <td>{entry.endpoint}</td>
                 <td>{entry.method}</td>
-                <td>{new Date(entry.timestamp).toLocaleString()}</td>
+                <td>{entry.usageCount}</td>
+                <td>{new Date(entry.lastUsedTimestamp).toLocaleString()}</td>
               </tr>
             ))
           ) : (
