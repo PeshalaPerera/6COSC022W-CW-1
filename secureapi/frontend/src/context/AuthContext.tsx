@@ -75,7 +75,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         {
           endpoint: "/countries",
           method: "GET",
-          timestamp: data.last_used,
+          usageCount: data.usage_count,
+          lastUsedTimestamp: data.last_used,
         },
       ]);
     } catch (err) {
