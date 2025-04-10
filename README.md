@@ -2,6 +2,7 @@
 
 > A secure API middleware that bridges users with [RestCountries.com](https://restcountries.com). Built with **FastAPI**, **SQLite**, and **React**.
 
+live demo => https://6-cosc-022-w-cw-1.vercel.app/
 ---
 
 ## 📦 Installation & Setup
