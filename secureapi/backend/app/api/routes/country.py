@@ -7,6 +7,7 @@ from app.core.security import get_current_user
 from app.database.models import User
 from app.database.db import get_db
 import requests
+from app.core.config import settings
 
 router = APIRouter(prefix="/countries", tags=["Countries"])
 
@@ -28,9 +29,9 @@ def get_country(
     db_user.api_key_last_used = datetime.utcnow()
     db.commit()
 
-    rest_countries_api = process.env.REST_COUNTRIES_API
-    
-    if not rest_countries_api:
+    restCountriesApi = settings.rest_countries_api
+
+    if not restCountriesApi:
         raise HTTPException(status_code=500, detail="REST_COUNTRIES_API environment variable not set")
 
     response = requests.get(f"{restCountriesApi}/name/{name}", timeout=5) # type: ignore
